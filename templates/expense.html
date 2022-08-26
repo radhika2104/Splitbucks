@@ -1,0 +1,505 @@
+{% extends "layout.html" %}
+
+{% block title %} Add Expense {% endblock %}
+
+{% block main %}
+
+    <script>
+        // On readystate, use bootstrap tokenfield and Jquery autocomplete function together to group div
+        // Tutorial link - https://www.youtube.com/watch?v=6M_-buqnBoE&ab_channel=Cairocoders
+        // bootstrap tokenfield link - https://sliptree.github.io/bootstrap-tokenfield/
+        // JQuery autocomplete link - https://jqueryui.com/autocomplete/
+        $(document).ready(function(){
+            // In order to send debtorIDs to backend - manipulate source format for dictionary
+            // Source for syntax -  https://salman-w.blogspot.com/2013/12/jquery-ui-autocomplete-examples.html#example-1
+            var FRows = [{% for id,name in friendRows.items() %} {value:"{{id}}",label:"{{name}}" }, {% endfor %}];
+
+            $('#friendtext').tokenfield({
+                autocomplete: {
+                source: FRows,
+                focus: function(event, ui) {
+				},
+                select: function(event, ui) {
+					$("#friendtext_label").val(ui.item.label);
+				},
+                delay: 100
+                },
+                showAutocompleteOnFocus: true 
+            });
+
+        });
+        // Add autocomplete and tokenfield to expense div - for both friends and groups
+        // try syntax for id addition in tokenfield {value:id,label: name}
+        // source: [{% for id,name in DebtRows.items() %} {value:id,label:name}, {% endfor %}]
+        
+        $(document).ready(function(){
+            // In order to send debtorIDs to backend - manipulate source format for dictionary
+            // Source for syntax -  https://salman-w.blogspot.com/2013/12/jquery-ui-autocomplete-examples.html#example-1
+            var DRows = [{% for id,name in DebtRows.items() %} {value:"{{id}}",label:"{{name}}" }, {% endfor %}];
+            
+            $('#debtor').tokenfield({
+                autocomplete: {
+                source: DRows,
+                focus: function(event, ui) {
+				},
+                select: function(event, ui) {
+					$("#debtor_label").val(ui.item.label);
+				},
+                delay: 100
+                },
+                showAutocompleteOnFocus: true 
+            });
+        });
+
+
+        // Making paid by button dynamic using ajax
+        $(document).ready(function(){
+        $('#who').on('click',function(event){
+            event.preventDefault();
+            if ($.trim($('#debtor').val()).length == 0){
+                alert('Please enter alteast one friend or group');
+                return false;
+            }else if($.trim($('#value').val()).length == 0){
+                alert('Please enter value to split');
+                return false;
+            }else{
+                // How to receive a callback in ajax - https://stackoverflow.com/questions/18593082/send-input-value-to-php-using-ajax-with-result-printed-to-div
+                $.ajax({
+                    type: 'POST',
+                    url: '/expense',
+                    data: {debtor: $('#debtor').val(),paidby:'paidby'},
+                    success: function(data)
+                    {
+                        $("#paidbydiv").html(data);
+                        //$("#paidbydiv").html(data);
+                        $("#paidbydiv").show();
+                        $('#Xpaid').click(function(){
+                            $("#paidbydiv").hide().prop('required',false);
+                        });
+                        $('#Xerror').click(function(){
+                            $("#paidbydiv").hide().prop('required',false);
+                        });
+                        $('.payer').click(function(){
+                            var payer_id = $(this).attr('id');
+                            $('#who').html($(this).val());
+                            $('#who_input').val(payer_id);
+                            $("#paidbydiv").hide().prop('required',false);
+                        });
+                        $('.multiple').click(function(){
+                            $('#who').html($(this).val());
+                            $('#who_input').val($(this).val());
+                            $("#multimore").show();
+                            $('#multidone').click(function(){
+                                // Get the values paid by multiple people in an array
+                                // syntax - https://stackoverflow.com/questions/58050011/how-get-all-values-of-one-class-in-jquery
+                                var paidval = $('.multippl').map((_,el) => el.value).get();
+                                // Send ajax request to server to match sum of paid values to total value
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/expense_check_total',
+                                    data: {paidlist: paidval, total: $('#value').val()},
+                                    success: function(data){
+                                        if (data !== 'success')
+                                        {
+                                            alert(data)
+                                        }
+                                        else
+                                        {
+                                            $("#paidbydiv").hide().prop('required',false);
+                                        }
+                                    }
+
+                                });
+                        });
+                        });
+                    }
+
+                });
+            }
+        });
+        });
+
+        // Making split button dynamic using ajax
+        $(document).ready(function(){
+        $('#split_how').on('click',function(event){
+            event.preventDefault();
+            if ($.trim($('#debtor').val()).length == 0){
+                alert('Please enter alteast one friend or group');
+                return false;
+            }else if($.trim($('#value').val()).length == 0){
+                alert('Please enter value to split');
+                return false;
+            }else{
+                    $("#splitdiv").show();
+                    $('#Xsplit').click(function(){
+                                $("#splitdiv").hide().prop('required',false);
+                            });
+                    $('#equally').click(function(){
+                        $("#amountdiv").hide().prop('required',false);
+                        $("#percentdiv").hide().prop('required',false);
+                        $("#sharediv").hide().prop('required',false);
+                        $("#equallydiv").show();
+                        $.ajax({
+                        type: 'POST',
+                        url: '/expense',
+                        data: {debtor: $('#debtor').val(),total: $('#value').val(),currency: $('#currency').val(),equally:'equally'},
+                        success: function(data)
+                            {
+                                $("#equallydiv").html(data);
+                                $('#Xequally').click(function(){
+                                    $("#equallydiv").hide().prop('required',false);
+                                });
+                                $('#equallydone').click(function(){
+                                    $("#splitdiv").hide().prop('required',false);
+                                    $("#equallydiv").hide().prop('required',false);
+                                });
+                            }
+                        });
+                    });
+                    $('#amount').click(function(){
+                        $("#percentdiv").hide().prop('required',false);
+                        $("#sharediv").hide().prop('required',false);
+                        $("#equallydiv").hide().prop('required',false);
+                        $("#amountdiv").show();
+                        $.ajax({
+                        type: 'POST',
+                        url: '/expense',
+                        data: {debtor: $('#debtor').val(),total: $('#value').val(),currency: $('#currency').val(),amount:'amount'},
+                        success: function(data)
+                            {
+                                $("#amountdiv").html(data);
+                                $('#Xamount').click(function(){
+                                $("#amountdiv").hide().prop('required',false);
+                                });
+                                $('#amountdone').click(function(){
+                                    // Get the values paid by multiple people in an array
+                                    // syntax - https://stackoverflow.com/questions/58050011/how-get-all-values-of-one-class-in-jquery
+                                    
+                                    var splitval = $('.splitinput').map((_,el) => el.value).get();
+
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: '/expense_check_total',
+                                        data: {paidlist: splitval, total: $('#value').val()},
+                                        success: function(data){
+                                            if (data !== 'success')
+                                            {
+                                                alert(data)
+                                            }
+                                            else
+                                            {
+                                                $("#splitdiv").hide().prop('required',false);
+                                                $("#amountdiv").hide().prop('required',false);
+                                                $('#split_how').html("unequally");
+                                                $('#split_how_input').val("unequally");
+                                                // Remove data from share or percent divs to capture data from share div on expense form post
+                                                $('.shareinput').val("");
+                                                $('.percentinput').val("");
+                                            }
+                                        }
+                                        });
+                                });
+                             }
+                        });
+                    });
+                    $('#percent').click(function(){
+                        $("#sharediv").hide().prop('required',false);
+                        $("#equallydiv").hide().prop('required',false);
+                        $("#amountdiv").hide().prop('required',false);
+                        $("#percentdiv").show();
+                        $.ajax({
+                        type: 'POST',
+                        url: '/expense',
+                        data: {debtor: $('#debtor').val(),percent:'percent'},
+                        success: function(data)
+                            {
+                                $("#percentdiv").html(data);
+                                $('#Xpercent').click(function(){
+                                    $("#percentdiv").hide().prop('required',false);
+                                });
+                                $('#percentdone').click(function(){
+                                    // Get the values paid by multiple people in an array
+                                    // syntax - https://stackoverflow.com/questions/58050011/how-get-all-values-of-one-class-in-jquery
+                                    
+                                    var percentval = $('.percentinput').map((_,el) => el.value).get();
+
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: '/expense_check_percent',
+                                        data: {paidlist: percentval},
+                                        success: function(data){
+                                            if (data !== 'success')
+                                            {
+                                                alert(data)
+                                            }
+                                            else
+                                            {
+                                                $("#splitdiv").hide().prop('required',false);
+                                                $("#percentdiv").hide().prop('required',false);
+                                                $('#split_how').html("unequally");
+                                                $('#split_how_input').val("unequally");
+                                                // Remove data from share or amount divs to capture data from share div on expense form post
+                                                $('.shareinput').val("");
+                                                $('.splitinput').val("");
+                                            }
+                                        }
+                                        });
+                                });
+                            }
+                        });
+                    });
+                    $('#share').click(function(){
+                        $("#equallydiv").hide().prop('required',false);
+                        $("#amountdiv").hide().prop('required',false);
+                        $("#percentdiv").hide().prop('required',false);
+                        $("#sharediv").show();
+                        $.ajax({
+                        type: 'POST',
+                        url: '/expense',
+                        data: {debtor: $('#debtor').val(),share:'share'},
+                        success: function(data)
+                            {
+                                $("#sharediv").html(data);
+                                $('#Xshare').click(function(){
+                                $("#sharediv").hide().prop('required',false);
+                                });
+                                $('#sharedone').click(function(){
+                                    $("#splitdiv").hide().prop('required',false);
+                                    $("#sharediv").hide().prop('required',false);
+                                    $('#split_how').html("unequally");
+                                    $('#split_how_input').val("unequally");
+                                    // Remove data from percent or amount divs to capture data from share div on expense form post
+                                    $('.percentinput').val("");
+                                    $('.splitinput').val("");
+                                });
+                            }
+                        });
+                    });
+                }
+            });
+        });     
+
+
+
+        document.addEventListener('DOMContentLoaded',function() {
+
+            /* function to reload on cancel */
+            var cancelled = document.getElementById('cancel');
+            cancelled.addEventListener('click',function() {
+                    window.location.reload();
+                });
+
+            /* Function to alter display of friend div */
+            var individual = document.getElementById('individual');
+            var addFriend = document.getElementById('DIVfriend');
+            individual.addEventListener('click',function() {
+                if (addFriend.style.display === 'none'){
+                    addFriend.style.display = 'block';
+                }
+                else{
+                    addFriend.style.display = 'none';
+                }
+	
+                var closeDIV = document.getElementById('close');      
+                closeDIV.addEventListener('click',function() {
+                    addFriend.style.display = 'none';
+                    });
+            
+            });
+            /* Function to alter display of group div */
+            var group = document.getElementById('group');
+            var addGroup = document.getElementById('DIVgroup');
+                group.addEventListener('click',function() {
+                    if (addGroup.style.display === 'none'){
+                        addGroup.style.display = 'block';
+                    }
+                    else{
+                        addGroup.style.display = 'none';
+                    }
+        
+                    var closeg = document.getElementById('closeg');      
+                    closeg.addEventListener('click',function() {
+                        addGroup.style.display = 'none';
+                        });
+            });
+
+
+            /* function to add div container for adding notes and images */
+            var add = document.getElementById('add');
+            add.addEventListener('click',function() {
+                const notesDiv = document.getElementById("notesdiv");
+                notesDiv.style.display = 'block';
+                var aj = new XMLHttpRequest();
+                aj.onreadystatechange = function() {
+                if (aj.readyState == 4 && aj.status == 200)
+                {   
+                    const notesDiv = document.getElementById("notesdiv");
+                    notesDiv.innerHTML = aj.responseText;
+                    // $("#notesdiv").html(aj.responseText); alternate jQuery not working
+
+                    /* function to hide notes div */
+                    
+                    var Donediv = document.getElementById("done"); 
+                    var HIDEdiv = document.getElementById("hide-div");      
+                    HIDEdiv.addEventListener('click',function() {
+                        notesDiv.style.display = 'none';
+                            });
+                    Donediv.addEventListener('click',function() {
+                        notesDiv.style.display = 'none';
+                            });
+                }    
+                
+                };
+                aj.open("GET","static/notes.html",true);
+                aj.send();
+            });
+            /* Function to hide query prompt */
+            var no = document.getElementById('no');
+            var queryDIV = document.getElementById('queryDIV');
+            no.addEventListener('click',function() {
+                queryDIV.style.display = 'none';
+
+            });
+            
+        });
+
+    </script>
+    
+    <div class="navbuttons">
+        <button class="btn btn-danger" type="button" id="individual">Add Friends</button>
+        <button class="btn btn-danger" type="button" id="group">Create a Group</button>
+    </div>
+    {% if error %}
+    <div class="alert alert-warning" role="alert">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    {% if success %}
+    <div class="alert alert-success" role="alert">
+        {{ success }}
+    </div>
+    {% endif %}
+
+    {% if query %}
+    <div id="queryDIV" style="background-color: lightblue;" class="my-2">
+        <form action="/expense_query" method="post"> 
+            {{ query }}
+                <input type="hidden" name=friendID value={{friendID}}>     
+            <button class="btn btn-light special-button" type="button" name ="no" id="no">No</button>
+            <button class="btn btn-danger" type="submit" id="yes" name="yes">Yes</button>
+        </form>
+    </div>
+    {% endif %}
+
+    <div id='DIVfriend' style="display: none;">
+        <form action="/expense_addfriend" method="post" >
+                <div class="card effect">
+                    <div class="card-header bg-danger c-head">Add friend<a class="xformat" id='close' href="#">X</a></div>
+                    <div class="card-body">
+                            <div> 
+                                <input name='username' type="text" placeholder="Enter Username" size="32" class="border-top-0 border-end-0 border-start-0">        
+                            </div>
+                            <div class="my-2">
+                                <input name='email' type="text" placeholder="Enter email" size="32" class="border-top-0 border-end-0 border-start-0">    
+                            </div>
+                            <div>
+                                <button class="btn btn-danger" type="submit" name="addf">Done</button>  
+                            </div>  
+                    </div>
+                </div>  
+        </form>
+    </div>
+    <div id='DIVgroup' style="display: none;">
+        <form action="/expense_addgroup" method="post" id="group_form">
+                <div class="card effect">
+                    <div class="card-header bg-danger c-head">Add Group<a class="xformat" id='closeg' href="#">X</a></div>
+                    <div class="card-body">
+                            <div class="mt-1">
+                                <small>Tip: Add friends to Splitbucks first in order to create a group with them. </small>
+                            </div>
+                            <div class="mt-3">
+                                <input autocomplete="off" name="groupname" id="grouptext" size="40" required type="text" placeholder="Enter group name" class="form-control">    
+                            </div>
+                            <div class="mt-3"> 
+                                <input name="friendnames" id="friendtext" type="text" placeholder="Friend names" class="border-top-0 border-end-0 border-start-0"  size="40"  >        
+                                <input name="friendtext_label" id="friendtext_label" type="hidden" value="">
+                                <span id="friend_result"></span>
+                            </div>
+                            <div class="mt-3">
+                                <button class="btn btn-danger" type="submit" name="addg">Done</button>  
+                            </div>  
+                    </div>
+                </div>  
+        </form>
+    </div>
+    <div class="m-1 p-2"></div>
+    
+    <form action="/expense" method="post" enctype="multipart/form-data" >
+        <div class="col d-flex justify-content-center">
+            <div class="card w-50 effect">
+                <div class="card-header bg-danger c-head">Add an expense</div>
+                <div class="card-body">
+                <div class="m-2 p-2"></div>
+
+                    
+                        <div class="mb-3">
+                            <!-- Put this into ajax -->
+                            <label for="debtor">With<strong> you</strong> and: </label>
+                            <input required class=" mx-auto w-50 border-top-0 border-end-0 border-start-0 alignbox debtor " type="text" id="debtor" name="debtor" placeholder="Enter friend names or groups"  >
+                            <input type = "hidden" value="" id="debtor_label" name="debtor_label">
+                            <br>
+                        </div>
+                        <div class="bill">   
+                            <div class="mb-3">
+                                <input required autocomplete="off" id="description" class=" mx-auto border-top-0 border-end-0 border-start-0" type="text"  name="description" placeholder="Enter a description">    
+                            </div>
+                            <div class="cost-container">
+                                <select id="currency" name="currency" class="border-top-0 border-end-0 border-start-0">
+                                    {% for key,val in currency_pairs.items() %}
+                                        <option value="{{key}}({{ val}})">{{key}}({{val}})</option>
+                                    {% endfor %}
+                                </select>
+                                <input required autocomplete="off" class="border-top-0 border-end-0 border-start-0" type="number" step='0.01' id="value" name="value" placeholder="0.00" size = "40">
+                            </div>
+                        </div>
+                        <div class="middle-container">
+                            <!-- <input type="button" class="btn btn-light special-button" id="who" name="who" value="you">-->
+                            <p> Paid by <button type="button" class="btn btn-light special-button" id="who" name="name_who">you</button> and split <button type="button" class="btn btn-light special-button" id="split_how" name="name_split_how">equally</button></p>
+                            <input type="hidden" value="you" id="who_input" name="who_input">
+                            <input type="hidden" value="equally" id="split_how_input" name="split_how_input">
+                            <div id="paidbydiv" style='display:none;' ></div>
+                            <div id="splitdiv" style='display:none;' class="splitdiv">
+                                <div class="col d-flex">
+                                    <div class="card w-50 effect">
+                                        <div class="card-header bg-danger c-head">Choose Split options  <a  id="Xsplit" class="xformat" href="#">   X</a></div>
+                                        <div class="card-body">
+                                
+                                            <div><input type="button" value="Split equally" class="btn btn-light special-button" size="30" id="equally" ></div>
+                                            <div><input type="button" value="Split by exact amount" class="btn btn-light special-button" size="30" id="amount" ></div>
+                                            <div><input type="button" value="Split by percentage" class="btn btn-light special-button" size="30" id="percent"></div>
+                                            <div><input type="button" value="Split by shares" class="btn btn-light special-button" size="30" id="share" ></div>
+                                                
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="equallydiv" style="display: none;" class="my-2 equallydiv"></div>      
+                            <div id="amountdiv" style="display: none;" class="my-2 amountdiv"></div>  
+                            <div id="percentdiv" style="display: none;" class="my-2 percentdiv"></div>  
+                            <div id="sharediv" style="display: none;" class="my-2 sharediv"></div>  
+                             
+                            <button class="btn btn-light w-25" type="button" id="add" >Add notes/ images</button>
+                        </div>
+                    
+                        <button class="btn btn-light w-25 special-button" type="button" name ="cancel" id="cancel">Cancel</button>
+                        <button class="btn btn-danger w-25" type="submit" id="save" name="save_expense">Save</button>
+                </div>
+            </div>
+        </div>
+        <div id="notesdiv" style="display: none;"></div>
+        
+        
+    </form>
+
+  {% endblock %}

@@ -1,0 +1,406 @@
+/* layout navtabs color to be pure white */
+.navtab
+{
+    
+    color: white !important;
+}
+
+.clickp{
+    cursor:pointer;
+}
+
+.group_summ{
+    position: relative;left: 10px;
+}
+
+.special-button{
+    color: red;
+}
+
+.xformat{
+    float:right;
+    color: white;
+    text-decoration:none;
+}
+#grouptext::placeholder {
+    text-align: center;
+    
+}
+#debtor::placeholder {
+    text-align: center;
+}
+
+
+.sidebar li .submenu{ 
+	list-style: none; 
+	margin: 0; 
+	padding: 0; 
+	padding-left: 1rem; 
+	padding-right: 1rem;
+    
+}
+
+
+.col-link{
+    color: #CC0000;
+    background-color: #ffe0e0;
+
+}
+
+
+
+/* card headers formatting */
+.c-head
+{
+    
+    color: white !important;
+    font-family:Verdana;
+    font-size:large;
+}
+
+.info-table{
+    width:60%;
+    border-collapse: separate;
+    border-spacing: 0 15px;
+}
+
+/* make div containers 3d */
+.effect
+{
+    -moz-box-shadow: 10px 10px 16px #000000;
+    -webkit-box-shadow: 10px 10px 16px #000000;
+    box-shadow: 10px 10px 16px #dba7a7;
+}
+
+
+@media (max-width:600px)
+{
+    .balanceslist{
+        position: relative;left: 45px !important;
+    }
+    .totallist{
+        position: relative;left: 10px !important;
+        width: 120% !important;
+    }
+    .settle_m{
+        position: absolute;left: 15px !important;
+    }
+    .group_insidedivs{
+        position: relative;top: 55px !important;
+    }
+    .transdate{
+        position: absolute;left: 5px !important;
+    }
+    .transimage{
+        position: absolute;left: 60px !important;
+    }
+    .trans{
+        position: absolute;left: 125px !important;
+    }
+
+    .stringsettle{
+        position: absolute;left: 10px !important;
+        
+    }
+
+    .widthdiv{
+        width: 70% !important;
+    }
+
+    .splitdivcards{
+        width: 60% !important;
+        position: relative; left: 40px;
+    }
+
+    #friendtext{
+        width: 100% !important;
+    }
+
+    .navbuttons
+    {
+        position:relative; bottom:20px;
+
+    }
+    .groupbuttons
+    {
+        position:absolute; left:35px; top: 450px;
+
+    }
+
+    #grouptext{
+        width: 100% !important;
+    }
+
+    #left{
+        width: 100%;
+        background-color: #ffe0e0;
+       
+    }
+    .bill:before{
+        content: url(bill.png);
+        justify-content: left;
+        position:relative;  right:90px; top: 15px;
+        width: 30%;
+        height:35%;
+    
+    }
+
+    #description{
+        position:relative;  left:50px; bottom: 80px;
+        width:160px;
+      
+
+    }
+
+    #value{
+        position:relative;  left:5px;
+        width: 60px;
+    }
+
+   
+    
+    .cost-container{
+        position:relative;  left:45px; bottom: 72px;
+        
+    }
+  
+
+    .w-50{
+        width:90% !important;
+    }
+
+    .w-25{
+        width:40% !important;
+    }
+
+    #grp{
+        width:80%  !important;
+    }
+
+
+    #friend{
+        width:80%  !important;
+    }
+
+   
+
+   /* align text/buttons */
+   .alignbox
+   {
+       position:relative; top:3px;
+
+   }
+
+   .middle-container{
+    position:relative;  bottom: 32px;
+    }
+
+    #notesdiv{
+        width: 80%;
+        position:relative;  left:30px;top: 10px; 
+
+    }
+    .splitdiv{
+        width: 90% !important;
+    }
+    #paidbydiv{
+        width: 100%;
+    }
+
+    .attach{
+        position:relative;  left: 30px; 
+    }
+
+    #DIVfriend{
+        width: 85%;
+        position:relative;  left:25px;
+
+    }
+
+    #DIVgroup{
+        width: 85%;
+        position:relative;  left:25px;
+
+    }
+    .transhead{
+        position: relative; left: 50px; top: 5px;
+    }
+    .settlehead{
+        position: relative; left: 50px; top: 45px;
+    }
+    .mobilesettle{
+        margin-top: 2rem !important;
+        margin-bottom: 1rem !important;
+    }
+    .paidbutton{
+        position: relative; left: 25px; 
+        position: relative; top: 25px; 
+        margin: 0.5rem !important;
+    }
+    .allpaidbutton{
+        position: relative; left: 50px; 
+    }
+
+}
+
+@media (min-width:600px)
+{
+    .allpaidbutton{
+        position: relative; left: 100px; 
+        position: relative; bottom: 25px; 
+    }
+   
+    .balanceslist{
+        position: relative;left: 145px;
+    }
+    .totallist{
+        position: relative;left: 275px;
+        width: 50%;
+    }
+    
+    .paidbutton{
+        position: relative; left: 250px; bottom: 30px; 
+    }
+    .transhead{
+        position: relative; left: 120px; top: 5px;
+    }
+    .settlehead{
+        position: relative; left: 120px; top: 5px;
+    }
+    .widthdiv{
+        width: 50% !important;
+    }
+
+    .sub_sub{
+        position: absolute; right: 20px; top: 5px;
+        text-align: right;
+    }
+    .trans_sub{
+        position: absolute; right: 170px; top: 5px;
+        text-align: right;
+    }
+
+
+    .insidedivs{
+        position: relative; left: 100px;
+    }
+
+    .main-dash-div{
+        position: relative; left: 300px;
+    }
+    .dash_inside{
+        position: relative; left: 100px;
+    }
+    .amountdivcard{
+        width: 40% !important;
+        position: relative; left: 370px;
+    }
+ 
+    .amountbox{
+        width: 40% !important;
+        position: relative;bottom: 27px;left: 134px;
+
+    }
+
+    .splitdivcards{
+        width: 30% !important;
+        position: relative; left: 370px;
+    }
+
+    .debtor::placeholder {
+        text-align: center;
+    }
+
+
+    .pass-post{
+        position:relative; left:11px;
+    }
+
+    .navbuttons
+    {
+        position:relative; left:225px; bottom:10px;
+
+    }
+    .groupbuttons
+    {
+        position:relative; left:125px ;
+
+    }
+    /* align text/buttons */
+    .alignbox
+    {
+        position:relative; left:6px; bottom:6px;
+
+    }
+
+    .bill:before{
+        content: url(bill.png);
+        justify-content: left;
+        position:relative;  right:175px;
+    
+    }
+    
+    #value{
+        position:relative;  left:10px;
+    }
+
+    #description{
+        position:relative;  left:60px; bottom: 90px;
+        width: 50%;
+    }
+    
+    .cost-container{
+        position:relative;  left:40px; bottom: 83px;
+    }
+
+    .middle-container{
+        position:relative;  bottom: 40px;
+    }
+
+    #left-dash{
+        float:left;
+        width:300px;
+        background-color: #ffe0e0;
+        position: absolute;left:0px; top: 80px; bottom:0px;
+    }
+
+    #DIVfriend{
+        width: 40%;
+        position:relative;  left:420px;
+
+    }
+    #DIVgroup{
+        width: 40%;
+        position:relative;  left:420px;
+
+    }
+    .paidbycard{
+        width: 35% !important;
+    }
+    
+    #notesdiv{
+        width: 24%;
+        position:absolute;  bottom: 70px; right:10px;
+
+    }
+    .splitdiv{
+        width: 100% !important;
+        position:absolute; left:30px !important;
+
+    }
+    #paidbydiv{
+        width: 100%;
+        position:absolute;  bottom:80px;left: 80px; 
+    }
+    
+
+    .attach{
+        position:relative;  left: 60px; 
+    }
+    
+    
+}
+
+
+
+

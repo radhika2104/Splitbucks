@@ -1,0 +1,20 @@
+<h4 class='mb-5 settlehead' >Totals</h4>
+
+{% for currency,details_list in totals_dic.items() %}
+    <div class="m-3 totallist" style=" background-color: #fcf0f0;">
+        <div class="m-2">
+            <strong class="headertotal" style="text-align: left;">TOTAL GROUP SPENDING</strong>
+            <div style=" float: right;">{{currency}}{{details_list[0]}}</div>
+        </div>
+        <div class="m-2">
+            <strong class="headertotal" style="text-align: left;">TOTAL YOU PAID FOR</strong>
+            <div style="float: right;">{{currency}}{{details_list[1]}}</div>
+        </div>
+        <div class="m-2">
+            <strong class="headertotal" style="text-align: left;">YOUR TOTAL SHARE</strong>
+            <div style=" float: right;">{{currency}}{{details_list[2]}}</div>
+        </div>
+    </div>
+{% endfor %}
+
+<div class="m-1 p-1"></div>

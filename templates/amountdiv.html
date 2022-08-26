@@ -1,0 +1,24 @@
+
+<div class="col d-flex">
+    <div class="card effect amountdivcard">
+        <div class="card-header bg-danger c-head">Split by exact amount<a id="Xamount" class="xformat" href="#">   X</a></div>
+        <div class="card-body bodytable"> 
+            <table class="table-condensed">
+                <tbody>
+                    {% for id,name in finalsharers.items() %}
+                        <tr >
+                            <td><label for="splitinput" class ="person" style="float: left;">{{name}}:   </label></td>
+                            <td>{{  currency}}</td>
+                            <td class="splitcell">
+                                <input class="form-control splitinput" type="number" step='0.01' name="splitinput" placeholder="{{individual_share}}"/>
+                            </td>
+                        </tr>
+                    {% endfor %}  
+                </tbody>
+            </table>
+            <div >
+                <input type="button" value="Finish" class="btn btn-danger my-1" id="amountdone" >        
+            </div>
+        </div>
+    </div>
+</div>

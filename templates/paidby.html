@@ -1,0 +1,28 @@
+<div class="col d-flex">
+    <div class="card effect paidbycard">
+        <div class="card-header bg-danger c-head">Choose Payer  <a id="Xpaid" class="xformat" href="#">   X</a></div>
+        <div class="card-body">
+                {% for id,name in finalsharers.items() %}
+                    <div>
+                        <input type="button" value="{{  name  }}" class="btn btn-light special-button payer" size="30" id="{{id}}" >  
+                        <input type="hidden" value="{{id}}" id="{{id}}" class="payerID">      
+                    </div>
+                {% endfor %}
+                <div >
+                    <input type="button" value="Multiple people" class="btn btn-light special-button multiple" size="30" id="multiple" class="multiple">        
+                </div>
+                <div id="multimore" style="display: none; border: thin solid grey; background-color: azure;" class="my-2 multimore">
+                    {% for id,name in finalsharers.items() %}
+                    <div>
+                        <label for="multippl" name="multipayers">{{ name }} </label>
+                        <input type="hidden" value="{{id}}" id="multipayersID" name="multipayersID">
+                        <input type="number" step='0.01' placeholder="0.00"  class="multippl form-control my-2" name="multipayment">        
+                    </div>
+                    {% endfor %}
+                    <div >
+                        <input type="button" value="Done" class="btn btn-danger" id="multidone" >        
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>

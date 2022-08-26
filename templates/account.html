@@ -1,0 +1,108 @@
+{% extends "layout.html" %}
+
+{% block title %} Your Account {% endblock %}
+
+{% block main %}
+
+<script>
+    /* function to show/hide password div */
+    document.addEventListener('DOMContentLoaded',function() {
+
+        var Divpassword = document.getElementById('change-password');
+        var Editpassword = document.getElementById('password-edit');
+        Editpassword.addEventListener('click',function() {
+                if (Divpassword.style.display === 'none'){
+                    Divpassword.style.display = 'block';
+                }
+                else{
+                    Divpassword.style.display = 'none';
+                }
+            });
+
+        var nameEdit = document.getElementById('name-edit');
+        var nameDIV = document.getElementById('nameDIV');  
+        var nameTD = document.getElementById('name-td');
+        nameEdit.addEventListener('click',function() {
+            nameTD.innerHTML = nameDIV.innerHTML;
+
+        });
+
+        var emailEdit = document.getElementById('email-edit');
+        var emailTD = document.getElementById('email-td');
+        var emailDIV = document.getElementById('emailDIV');
+    var save = document.getElementById('save');
+
+    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    save.disabled = false;
+    
+        emailEdit.addEventListener('click',function() {
+            emailTD.innerHTML = emailDIV.innerHTML;
+            
+        });
+    });
+
+        
+
+</script>
+{% if error %}
+    <div class="alert alert-warning" role="alert">
+        {{ error }}
+    </div>
+{% endif %}
+{% if success %}
+    <div class="alert alert-success" role="alert">
+        {{ success }}
+    </div>
+{% endif %}
+
+<div class="col d-flex justify-content-center">
+    <div class="card w-50 effect">
+        <div class="card-header bg-danger c-head">Account</div>
+            <div class="card-body">
+                <form action = '/account' method = 'post'>
+                    <div class="m-2 p-2"></div>
+                    <div class="col d-flex justify-content-center section">
+                        <table class="info-table">
+                            <tbody>
+                                
+                                <tr>
+                                    <th>Name</th>
+                                    <td id="name-td"> {{ row[1] }} </td>
+                                    <td> 
+                                        <input  type = 'hidden' value = "{{ row[0] }}" name = "id">
+                                        <input type = "button" class= "btn btn-danger" value = "Edit" id="name-edit" >
+                                    </td>
+                                </tr>                        
+                                <tr>
+                                    <th>Email</th>
+                                    <td id="email-td">{{ row[2] }}  </td>
+                                    <td> 
+                                        <input type = "button" class= "btn btn-danger" value = "Edit" id="email-edit">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="m-2 p-2"></div>
+                    <div>     
+                            <input  type = 'hidden' value = "{{ row[0] }}" name = "id">
+                            <input type = "button" class= "btn btn-danger" value = "Change Password" id="password-edit">
+                            <div id="change-password" class="mt-4 pt-3" style="display: none;">
+                                <label>Current Password: </label>
+                                <input class="alignbox" type="password" id="current-password" name="current-password">         
+                                <div class="mt-2 pass-post" >
+                                    <label>  New Password: </label>
+                                    <input class="alignbox" type="password" id="new-password" name="new-password">
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <input type = "submit" class= "btn btn-danger" value = "Save Changes" id="save">
+                            </div>
+                    </div>
+                </form>
+            </div>
+    </div>
+</div>
+<div id="nameDIV" style="display:none;"> <input name="username" type="text" placeholder="{{ row[1] }}"></div>
+<div id="emailDIV" style="display:none;"> <input name="email" id="editmail" type="text" placeholder="{{ row[2] }}"></div>
+{% endblock %}

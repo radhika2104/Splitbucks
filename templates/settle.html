@@ -1,0 +1,26 @@
+<h4 class='mb-5 settlehead' >Settle Up</h4>
+{% if settle_message %}
+    <div class="mb-5 settle_m">
+        <h4 style="color: grey; text-align: right;">{{ settle_message }}</h4>
+    </div>
+{% endif %}
+
+{% if pk_list %}
+    <form action="/settle_all_payment" method="post" class="mobilesettle mb-2 ">
+        <input type="hidden" value="{{pk_list}}" id="{{pk_list}}" class="pickkey" name="id">
+        <button class="btn btn-light special-button allpaidbutton postpaid" type="submit" name ="paid" >Settle all balances at once</button>
+    </form>
+{% endif %}
+
+{% if settle_dic %}
+    <div>
+        {% for primary_key, string in settle_dic.items() %}
+        <form action="/settle_payment" method="post" class="mobilesettle mb-2 ">
+            <input type="hidden" value="{{primary_key}}" id="{{primary_key}}" class="pickkey" name="id">
+            <div class='stringsettle'>{{string}}</div>
+            <button class="btn btn-light special-button paidbutton postpaid" type="submit" name ="paid" >Settle Now</button>
+        </form>
+        {% endfor %}
+    </div>
+{% endif %}
+

@@ -1,0 +1,61 @@
+{% if friend_id %}
+    <input type='hidden' id="pickid_f" value="{{friend_id}}">
+    <div class="groupbuttons mb-3 pb-3">
+        <button class="btn btn-danger mx-1" type="button" id="settleup_f">Settle Up</button>
+    </div>
+{% endif %}
+<div id="settlediv_f" class="" style="display: none; border: #6c706c; border-width: thin;"></div>
+
+<div id="friend_transactions">
+
+    <div class = "group_insidedivs" >
+        
+        {% if message %}
+            <h3>{{ message }}</h3>
+        {% endif %}
+    </div>
+    <div class = "group_insidedivs" >
+        <h4 class='mb-5 transhead' >Transactions</h4>
+        <!--ng_transaction_details[trans_id] = [date,description,pay_string,owe/lent_string]-->
+        {% if ng_transaction_details %}
+            {% for trans_id,details in ng_transaction_details.items() %}
+                <div class="mb-5" >
+                    <input type='hidden' id="trans_id" value="{{trans_id}}">
+                    <div class="transdate" style="position: absolute;left: 100px;">{{details[0]}}</div>
+                    <div class="transimage" style="position: absolute;left: 170px;"><img  class="cover rounded" src="/static/bill.png" alt="billicon" style="width:70px; height: 80px;"></div>
+                    <div  class="trans" style="position: relative;left: 250px;" >
+                        <div class="group_summ" style="text-align:left;" >
+                            <div ><h5>{{details[1].capitalize()}}</h5></div>
+                            <div class='trans_sub' >
+                                <div  style="color:#6c706c ;"><strong>{{details[3]}}</strong></div>
+                            </div>
+                            <div style="color:#6c706c;"><small>{{details[2]}}</small></div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <!--g_transaction_details[group_id] = [group_name,trans_id,date,status]-->
+        {% if g_transaction_details %}
+            {% for group_id,details in g_transaction_details.items() %}
+                <div class="mb-5" >
+                    <input type='hidden' id="group_id" value="{{group_id}}">
+                    <div class="transdate" style="position: absolute;left: 100px;">{{details[0][2]}}</div>
+                    <div class="transimage" style="position: absolute;left: 170px;"><img  class="cover rounded" src="/static/bill.png" alt="billicon" style="width:70px; height: 80px;"></div>
+                    <div  class="trans" style="position: relative;left: 250px;" >
+                        <div class="group_summ" style="text-align:left;" >
+                            <div ><h5>{{details[0][0].capitalize()}}</h5></div>
+                            <div class='trans_sub' >
+                                {% for d in details %}
+                                <div  style="color:#6c706c ;"><strong>{{d[3]}}</strong></div>
+                                {% endfor %}
+                            </div>
+                            <div style="color:#6c706c;"><small>Shared group</small></div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+</div>

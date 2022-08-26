@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+
+{% block title %} Sign Up {% endblock %}
+
+{% block main %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded',function() {
+
+            var bt = document.getElementById('signup');
+            var input = document.getElementById('email');
+            var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+            bt.addEventListener('click',function() {
+                if(!input.value.match(mailformat))
+                {
+                    alert("You have entered an invalid email address!");
+                    bt.href = "#";
+                    window.location.reload();
+                }
+            });
+        });
+
+    </script>
+
+    {% if error %}
+    <div class="alert alert-warning" role="alert">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <div class="m-3 p-3"></div>
+
+    <div class="col d-flex justify-content-center">
+        <div class="card w-50 effect">
+            <div class="card-body">
+            <h3 class="card-title ">Sign up</h3>
+            <div class="m-2 p-2"></div>
+
+                <form action="/signup" method="post" >
+                    <div class="mb-3">
+                        <input required autocomplete="off" autofocus class="form-control mx-auto w-50" id="username" name="username" placeholder="Username" type="text">
+                    </div>
+                    <div class="mb-3">
+                        <input required class="form-control mx-auto w-50" id="email" name="email" placeholder="Email" type="email">
+                    </div>
+                    <div class="mb-3">
+                        <input required class="form-control mx-auto w-50" id="password" name="password" placeholder="Password" type="password">
+                    </div>
+                    <div class="mb-3">
+                        <input required class="form-control mx-auto w-50" id="confirmation" name="confirmation" placeholder="Password(again)" type="password">
+                    </div>
+                    <div class="m-1 p-1"></div>
+                    <button class="btn btn-danger w-50" type="submit" id="signup">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

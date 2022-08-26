@@ -1,0 +1,22 @@
+<h4 class='mb-5 settlehead' >Balances</h4>
+{% if balance_message %}
+    <div class="mb-5 settle_m">
+        <h4 style="color: grey; text-align: right;">{{ balance_message }}</h4>
+    </div>
+{% endif %}
+
+{% if balances_list %}
+    <div class="balanceslist">
+        {% for balance in balances_list %}
+            <div class='mb-2' style=" background-color: #fcf0f0;">{{balance}}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% if settle_balances %}
+    <div class="balanceslist">
+        {% for balance in settle_balances %}
+            <div class='mb-2' style=" background-color: #fcf0f0;">{{balance}}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+<div class="m-1 p-1"></div>

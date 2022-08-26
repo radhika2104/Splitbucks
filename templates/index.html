@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+
+{% block title %} Home {% endblock %}
+
+{% block main %}
+
+    <script>
+      function change_image() {
+          const url = document.getElementById('bannerImage');
+          if (url.src.includes('split1')) {
+              url.src = url.src.replace('split1.jpg','split2.jpeg');
+          }
+          else {
+              url.src = url.src.replace('split2.jpeg','split1.jpg');
+          }
+      } setInterval(change_image, 6000);
+
+    </script>
+
+    <div class="card border-0">
+        <div class="row no-gutters">
+
+            <div class="col-md-6 p-5">
+                <div class="card-body">
+                    <div class="p-2 m-2" >
+                        <h1 class="card-title">Less stress when sharing expenses.</h1>
+                    </div>
+
+                <p class="card-text">Keep track of your shared expenses and balances with housemates, trips, groups, friends, and family.</p>
+                <div class="p-2 m-2" >
+                    <a href="/signup" class="button btn btn-danger fs-5">Sign Up</a>
+                </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <img id="bannerImage" class="card-img d-inline-block align-text-top rounded" src="/static/split1.jpg"  height="370" width="200" alt="Split bill" >
+            </div>
+
+        </div>
+    </div>
+
+    <div class="m-1 p-1"></div>
+
+    <div class="row border-0">
+        <div class="col-sm-4 my-2 py-3 p-2">
+          <div class="card border-0">
+            <div class="card-body">
+              <p class="card-text">"Makes it Easy to split everything from your dinner bill to rent."</p>
+              <h5>Jennifer Singh</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4 my-2 py-3 p-2">
+            <div class="card border-0">
+              <div class="card-body">
+                <p class="card-text">"Life hack for group trips. Amazing tool to use when travelling with friends! Makes life so easy!!"</p>
+                <h5>Ahmed Malan</h5>
+              </div>
+            </div>
+        </div>
+        <div class="col-sm-4 my-2 py-3 p-2">
+            <div class="card border-0">
+              <div class="card-body">
+                <p class="card-text">"So amazing to have this app manage balances and keep money out of relationships. Love it!!"</p>
+                <h5>Doug Upadhyay</h5>
+              </div>
+            </div>
+        </div>
+      </div>
+{% endblock %}

@@ -1,0 +1,47 @@
+
+    <div class = "insidedivs" >
+        {% if message %}
+            <h3>{{ message }}</h3>
+        {% endif %}
+    </div>
+    <div class = "insidedivs" >
+        {% if friend_details %}
+            {% for friend_id,details in friend_details.items() %}
+            <div class="clickable clickp" id="{{friend_id}}">
+                <div style="position: absolute;left: 0px;"><img  class="cover rounded" src="/static/personalbill.png" alt="friendicon" style="width:80px;"></div>
+                <div class="mb-4"  style="background-color: #fcf0f0; position: relative;left: 90px;" >
+                    <div class="group_summ" style="text-align:left;" >
+                        <div ><h5>{{details[0][0].capitalize()}}</h5></div>
+                        <div  > <!--class='sub_sub'-->
+                            {% for det in details %}
+                                {% if det[2] > 0 %}
+                                    <div  style="color: #6cc269 ;"><strong> you are owed {{det[1]}}{{det[2]}}</strong></div>
+                                {% else %}
+                                    <div  style="color:#ff0000 ;"><strong>you owe {{det[1]}}{{(det[2]*(-1))}}</strong></div>
+                                {% endif%}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+
+        {% if settled_friends %}
+            {% for friend_id,friendname in settled_friends.items() %}
+            <div class="clickable clickp" id="{{friend_id}}">
+                <div style="position: absolute;left: 0px;"><img  class="cover rounded" src="/static/personalbill.png" alt="friendicon" style="width:80px;"></div>
+                <div class="mb-4" style="background-color: #fcf0f0; position: relative;left: 90px;">
+                    <div class="group_summ" style="text-align:left;" >
+                        <div><h5>{{ friendname.capitalize() }}</h5></div>
+                            <div style="color: #4e524e;">
+                                <strong>settled up</strong> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    
+

@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block title %} Activity {% endblock %}
+
+{% block main %} 
+
+<div class = "insidedivs" >
+    {% if message %}
+        <div class="w-75 m-5 p-5" style="text-align: center;"><h3>{{ message }}</h3></div>
+    {% endif %}
+</div>
+<div class = "insidedivs w-75" >
+    {% if activity_list %}
+        {% for activity in activity_list %}
+        
+            <div style="position: absolute;left: 0px;"><img  class="cover rounded" src="/static/activity.png" alt="groupicon" style="width:80px;"></div>
+            <div class="mb-4"  style="background-color: #fcf0f0; position: relative;left: 90px;" >
+                <div class="group_summ" style="text-align:left;" >
+                    <div ><h5>{{activity[1]}}</h5></div>
+                    <div class='sub_sub' style="color:#4f806f;"><strong>{{activity[2]}}</strong></div>
+                    <div style="color:#6c706c;"><small>{{activity[0]}}</small></div>
+                </div>
+            </div>
+
+        {% endfor %}
+    {% endif %}
+</div>
+{% endblock %}

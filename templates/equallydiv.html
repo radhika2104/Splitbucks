@@ -1,0 +1,17 @@
+
+<div class="col d-flex">
+    <div class="card effect equallydivcard splitdivcards">
+        <div class="card-header bg-danger c-head">Split Equally<a id="Xequally" class="xformat" href="#"></a></div>
+        <div class="card-body"> 
+            {% for name,val in equal_sharer.items() %}
+                <div class="my-2">
+                    <span class ="person" >{{name}}</span>
+                    <span class ="eqamount" style="float: right;">{{val}}</span>              
+                </div>
+            {% endfor %}  
+            <div >
+                <input type="button" value="Agree" class="btn btn-danger my-1" id="equallydone" >        
+            </div>
+        </div>
+    </div>
+</div>

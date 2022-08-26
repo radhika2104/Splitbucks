@@ -1,0 +1,21 @@
+<div class="col d-flex">
+    <div class="card effect amountdivcard">
+        <div class="card-header bg-danger c-head">Split by shares<a id="Xshare" class="xformat" href="#">   X</a></div>
+        <div class="card-body"> 
+            <table>
+                <tbody>
+                    {% for id,name in finalsharers.items() %}
+                        <tr class="my-2 py-1">
+                            <td><label for="shareinput" class ="person" style="float: left;">{{name}}: </label></td>
+                            <td><input  type="number" class="shareinput w-100" name="shareinput" step='0.01' placeholder="share(s)" ></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div >
+                <input type="button" value="Finish" class="btn btn-danger my-2" id="sharedone" >        
+            </div>
+        </div>
+    </div>
+</div>
+

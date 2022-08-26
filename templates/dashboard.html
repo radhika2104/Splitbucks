@@ -1,0 +1,882 @@
+{% extends "layout.html" %}
+
+{% block title %} Dashboard {% endblock %}
+
+{% block main %}
+
+<script>
+    /* Function for show/hide of views based on click in sidebar navigation */
+    $(document).ready(function(){
+       
+        $("#all_g_link").on('click',function(event){
+            $("#dashboard").hide().prop('required',false);
+            $("#outstanding_g").hide().prop('required',false);
+            $("#outstanding_f").hide().prop('required',false);
+            $("#owe_to_g").hide().prop('required',false);
+            $("#lent_to_g").hide().prop('required',false);
+            $("#all_f").hide().prop('required',false);
+            $("#owe_to_f").hide().prop('required',false);
+            $("#lent_to_f").hide().prop('required',false);
+            $("#particular_g").hide().prop('required',false);
+            $("#particular_f").hide().prop('required',false);
+            $("#all_g").show();
+            $.ajax({
+                type: 'POST',
+                url: '/all_g',
+                data: {all:'all'},
+                success: function(data)
+                    {
+                        $("#all_g").html(data);
+                        $(".clickable").click(function(){
+                        var group_id = $(this).attr('id');
+                        $.ajax({
+                            type: 'POST',
+                            url: '/group_transactions',
+                            data: {'group_id':group_id},
+                            success: function(data)
+                                {
+                                    
+                                    $("#particular_g").show();
+                                    $("#particular_g").html(data);  
+                                    $("#particular_f").hide().prop('required',false);
+                                    $("#dashboard").hide().prop('required',false);
+                                    $("#outstanding_g").hide().prop('required',false);
+                                    $("#outstanding_f").hide().prop('required',false);
+                                    $("#owe_to_g").hide().prop('required',false);
+                                    $("#lent_to_g").hide().prop('required',false);
+                                    $("#all_f").hide().prop('required',false);
+                                    $("#owe_to_f").hide().prop('required',false);
+                                    $("#lent_to_f").hide().prop('required',false);
+                                    $("#all_g").hide().prop('required',false);
+                                    $("#settleup").click(function(){
+                                        if ($("#settlediv").css('display') == "none"){
+                                            var send_group_id = $('#pickid').val();
+                                            $.ajax({
+                                            type: 'POST',
+                                            url: '/settle_up',
+                                            data: {'send_group_id':send_group_id},
+                                            success: function(data)
+                                                {
+                                                    $("#settlediv").show();
+                                                    $("#balancesdiv").hide();
+                                                    $("#totalsdiv").hide();
+                                                    $("#settlediv").html(data); 
+
+                                                }
+                                            });
+                                        } else {
+                                            $("#settlediv").hide();
+                                        }
+                                        
+                                    });
+                                    $("#balances").click(function(){
+                                        if ($("#balancesdiv").css('display') == "none"){
+                                            var send_group_id = $('#pickid').val();
+                                            $.ajax({
+                                            type: 'POST',
+                                            url: '/balances',
+                                            data: {'send_group_id':send_group_id},
+                                            success: function(data)
+                                                {
+                                                    $("#settlediv").hide();
+                                                    $("#balancesdiv").show();
+                                                    $("#totalsdiv").hide();
+                                                    $("#balancesdiv").html(data); 
+                                                }
+                                            });
+                                        } else{
+                                            $("#balancesdiv").hide();
+                                        }
+
+                                    });
+                                    $("#totals").click(function(){
+                                        if ($("#totalsdiv").css("display") == "none"){
+                                            var send_group_id = $('#pickid').val();
+                                            $.ajax({
+                                            type: 'POST',
+                                            url: '/totals',
+                                            data: {'send_group_id':send_group_id},
+                                            success: function(data)
+                                                {
+                                                    $("#settlediv").hide();
+                                                    $("#balancesdiv").hide();
+                                                    $("#totalsdiv").show();
+                                                    $("#totalsdiv").html(data); 
+                                                }
+                                            });
+                                        } else {
+                                            $("#totalsdiv").hide();
+                                        }
+
+                                    });
+                                }
+                            });
+                        });
+                    }
+                });
+        });
+
+        $("#dashboard_link").on('click',function(event){
+            $("#all_g").hide().prop('required',false);
+            $("#outstanding_g").hide().prop('required',false);
+            $("#outstanding_f").hide().prop('required',false);
+            $("#owe_to_g").hide().prop('required',false);
+            $("#lent_to_g").hide().prop('required',false);
+            $("#all_f").hide().prop('required',false);
+            $("#owe_to_f").hide().prop('required',false);
+            $("#lent_to_f").hide().prop('required',false);
+            $("#particular_g").hide().prop('required',false);
+            $("#particular_f").hide().prop('required',false);
+            $("#dashboard").show();
+        });
+
+        $("#outstanding_g_link").on('click',function(event){
+            $("#dashboard").hide().prop('required',false);
+            $("#all_g").hide().prop('required',false);
+            $("#outstanding_f").hide().prop('required',false);
+            $("#owe_to_g").hide().prop('required',false);
+            $("#lent_to_g").hide().prop('required',false);
+            $("#all_f").hide().prop('required',false);
+            $("#owe_to_f").hide().prop('required',false);
+            $("#lent_to_f").hide().prop('required',false);
+            $("#particular_g").hide().prop('required',false);
+            $("#particular_f").hide().prop('required',false);
+            $("#outstanding_g").show();
+            $.ajax({
+                type: 'POST',
+                url: '/all_g',
+                data: {outstanding:'outstanding'},
+                success: function(data)
+                    {
+                        $("#outstanding_g").html(data);
+                        $(".clickable").click(function(){
+                        var group_id = $(this).attr('id');
+                        $.ajax({
+                            type: 'POST',
+                            url: '/group_transactions',
+                            data: {'group_id':group_id},
+                            success: function(data)
+                                {
+                                
+                                    $("#particular_g").show();
+                                    $("#particular_g").html(data);  
+                                    $("#particular_f").hide().prop('required',false);
+                                    $("#dashboard").hide().prop('required',false);
+                                    $("#outstanding_g").hide().prop('required',false);
+                                    $("#outstanding_f").hide().prop('required',false);
+                                    $("#owe_to_g").hide().prop('required',false);
+                                    $("#lent_to_g").hide().prop('required',false);
+                                    $("#all_f").hide().prop('required',false);
+                                    $("#owe_to_f").hide().prop('required',false);
+                                    $("#lent_to_f").hide().prop('required',false);
+                                    $("#all_g").hide().prop('required',false);
+                                    $("#settleup").click(function(){
+                                        if ($("#settlediv").css('display') == "none"){
+                                            var send_group_id = $('#pickid').val();
+                                            $.ajax({
+                                            type: 'POST',
+                                            url: '/settle_up',
+                                            data: {'send_group_id':send_group_id},
+                                            success: function(data)
+                                                {
+                                                    $("#settlediv").show();
+                                                    $("#balancesdiv").hide();
+                                                    $("#totalsdiv").hide();
+                                                    $("#settlediv").html(data); 
+
+                                                }
+                                            });
+                                        } else {
+                                            $("#settlediv").hide();
+                                        }
+                                        
+                                    });
+                                    $("#balances").click(function(){
+                                        if ($("#balancesdiv").css('display') == "none"){
+                                            var send_group_id = $('#pickid').val();
+                                            $.ajax({
+                                            type: 'POST',
+                                            url: '/balances',
+                                            data: {'send_group_id':send_group_id},
+                                            success: function(data)
+                                                {
+                                                    $("#settlediv").hide();
+                                                    $("#balancesdiv").show();
+                                                    $("#totalsdiv").hide();
+                                                    $("#balancesdiv").html(data); 
+                                                }
+                                            });
+                                        } else{
+                                            $("#balancesdiv").hide();
+                                        }
+
+                                    });
+                                    $("#totals").click(function(){
+                                        if ($("#totalsdiv").css("display") == "none"){
+                                            var send_group_id = $('#pickid').val();
+                                            $.ajax({
+                                            type: 'POST',
+                                            url: '/totals',
+                                            data: {'send_group_id':send_group_id},
+                                            success: function(data)
+                                                {
+                                                    $("#settlediv").hide();
+                                                    $("#balancesdiv").hide();
+                                                    $("#totalsdiv").show();
+                                                    $("#totalsdiv").html(data); 
+                                                }
+                                            });
+                                        } else {
+                                            $("#totalsdiv").hide();
+                                        }
+
+                                    });
+            
+                                }
+                            });
+                        });
+                    }
+                });
+        });
+
+        $("#owe_to_g_link").on('click',function(event){
+            $("#dashboard").hide().prop('required',false);
+            $("#outstanding_g").hide().prop('required',false);
+            $("#outstanding_f").hide().prop('required',false);
+            $("#all_g").hide().prop('required',false);
+            $("#lent_to_g").hide().prop('required',false);
+            $("#all_f").hide().prop('required',false);
+            $("#owe_to_f").hide().prop('required',false);
+            $("#lent_to_f").hide().prop('required',false);
+            $("#owe_to_g").show();
+            $("#particular_g").hide().prop('required',false);
+            $("#particular_f").hide().prop('required',false);
+            $.ajax({
+                type: 'POST',
+                url: '/all_g',
+                data: {owe_to_g:'owe_to_g'},
+                success: function(data)
+                    {
+                        $("#owe_to_g").html(data);
+                        $(".clickable").click(function(){
+                        var group_id = $(this).attr('id');
+                        $.ajax({
+                            type: 'POST',
+                            url: '/group_transactions',
+                            data: {'group_id':group_id},
+                            success: function(data)
+                                {
+                                    $("#particular_g").show();
+                                    $("#particular_g").html(data);  
+                                    $("#particular_f").hide().prop('required',false);
+                                    $("#dashboard").hide().prop('required',false);
+                                    $("#outstanding_g").hide().prop('required',false);
+                                    $("#outstanding_f").hide().prop('required',false);
+                                    $("#owe_to_g").hide().prop('required',false);
+                                    $("#lent_to_g").hide().prop('required',false);
+                                    $("#all_f").hide().prop('required',false);
+                                    $("#owe_to_f").hide().prop('required',false);
+                                    $("#lent_to_f").hide().prop('required',false);
+                                    $("#all_g").hide().prop('required',false);
+                                    $("#settleup").click(function(){
+                                        if ($("#settlediv").css('display') == "none"){
+                                            var send_group_id = $('#pickid').val();
+                                            $.ajax({
+                                            type: 'POST',
+                                            url: '/settle_up',
+                                            data: {'send_group_id':send_group_id},
+                                            success: function(data)
+                                                {
+                                                    $("#settlediv").show();
+                                                    $("#balancesdiv").hide();
+                                                    $("#totalsdiv").hide();
+                                                    $("#settlediv").html(data); 
+
+                                                }
+                                            });
+                                        } else {
+                                            $("#settlediv").hide();
+                                        }
+                                        
+                                    });
+                                    $("#balances").click(function(){
+                                        if ($("#balancesdiv").css('display') == "none"){
+                                            var send_group_id = $('#pickid').val();
+                                            $.ajax({
+                                            type: 'POST',
+                                            url: '/balances',
+                                            data: {'send_group_id':send_group_id},
+                                            success: function(data)
+                                                {
+                                                    $("#settlediv").hide();
+                                                    $("#balancesdiv").show();
+                                                    $("#totalsdiv").hide();
+                                                    $("#balancesdiv").html(data); 
+                                                }
+                                            });
+                                        } else{
+                                            $("#balancesdiv").hide();
+                                        }
+
+                                    });
+                                    $("#totals").click(function(){
+                                        if ($("#totalsdiv").css("display") == "none"){
+                                            var send_group_id = $('#pickid').val();
+                                            $.ajax({
+                                            type: 'POST',
+                                            url: '/totals',
+                                            data: {'send_group_id':send_group_id},
+                                            success: function(data)
+                                                {
+                                                    $("#settlediv").hide();
+                                                    $("#balancesdiv").hide();
+                                                    $("#totalsdiv").show();
+                                                    $("#totalsdiv").html(data); 
+                                                }
+                                            });
+                                        } else {
+                                            $("#totalsdiv").hide();
+                                        }
+
+                                    });
+            
+                                }
+                            });
+                        });
+ 
+                    }
+                });
+        });
+
+        $("#lent_to_g_link").on('click',function(event){
+            $("#all_g").hide().prop('required',false);
+            $("#outstanding_g").hide().prop('required',false);
+            $("#outstanding_f").hide().prop('required',false);
+            $("#owe_to_g").hide().prop('required',false);
+            $("#dashboard").hide().prop('required',false);
+            $("#all_f").hide().prop('required',false);
+            $("#owe_to_f").hide().prop('required',false);
+            $("#lent_to_f").hide().prop('required',false);
+            $("#particular_g").hide().prop('required',false);
+            $("#particular_f").hide().prop('required',false);
+            $("#lent_to_g").show();
+            $.ajax({
+                type: 'POST',
+                url: '/all_g',
+                data: {lent_to_g:'lent_to_g'},
+                success: function(data)
+                    {
+                        $("#lent_to_g").html(data);
+                        $(".clickable").click(function(){
+                        var group_id = $(this).attr('id');
+                        $.ajax({
+                            type: 'POST',
+                            url: '/group_transactions',
+                            data: {'group_id':group_id},
+                            success: function(data)
+                                {
+                                    $("#particular_g").show();
+                                    $("#particular_g").html(data);  
+                                    $("#particular_f").hide().prop('required',false);
+                                    $("#dashboard").hide().prop('required',false);
+                                    $("#outstanding_g").hide().prop('required',false);
+                                    $("#outstanding_f").hide().prop('required',false);
+                                    $("#owe_to_g").hide().prop('required',false);
+                                    $("#lent_to_g").hide().prop('required',false);
+                                    $("#all_f").hide().prop('required',false);
+                                    $("#owe_to_f").hide().prop('required',false);
+                                    $("#lent_to_f").hide().prop('required',false);
+                                    $("#all_g").hide().prop('required',false);
+                                    $("#settleup").click(function(){
+                                        if ($("#settlediv").css('display') == "none"){
+                                            var send_group_id = $('#pickid').val();
+                                            $.ajax({
+                                            type: 'POST',
+                                            url: '/settle_up',
+                                            data: {'send_group_id':send_group_id},
+                                            success: function(data)
+                                                {
+                                                    $("#settlediv").show();
+                                                    $("#balancesdiv").hide();
+                                                    $("#totalsdiv").hide();
+                                                    $("#settlediv").html(data); 
+
+                                                }
+                                            });
+                                        } else {
+                                            $("#settlediv").hide();
+                                        }
+                                        
+                                    });
+                                    $("#balances").click(function(){
+                                        if ($("#balancesdiv").css('display') == "none"){
+                                            var send_group_id = $('#pickid').val();
+                                            $.ajax({
+                                            type: 'POST',
+                                            url: '/balances',
+                                            data: {'send_group_id':send_group_id},
+                                            success: function(data)
+                                                {
+                                                    $("#settlediv").hide();
+                                                    $("#balancesdiv").show();
+                                                    $("#totalsdiv").hide();
+                                                    $("#balancesdiv").html(data); 
+                                                }
+                                            });
+                                        } else{
+                                            $("#balancesdiv").hide();
+                                        }
+
+                                    });
+                                    $("#totals").click(function(){
+                                        if ($("#totalsdiv").css("display") == "none"){
+                                            var send_group_id = $('#pickid').val();
+                                            $.ajax({
+                                            type: 'POST',
+                                            url: '/totals',
+                                            data: {'send_group_id':send_group_id},
+                                            success: function(data)
+                                                {
+                                                    $("#settlediv").hide();
+                                                    $("#balancesdiv").hide();
+                                                    $("#totalsdiv").show();
+                                                    $("#totalsdiv").html(data); 
+                                                }
+                                            });
+                                        } else {
+                                            $("#totalsdiv").hide();
+                                        }
+
+                                    });
+            
+                                }
+                            });
+                        });
+ 
+                    }
+                });
+        });
+
+        $("#all_f_link").on('click',function(event){
+            $("#all_g").hide().prop('required',false);
+            $("#outstanding_g").hide().prop('required',false);
+            $("#outstanding_f").hide().prop('required',false);
+            $("#owe_to_g").hide().prop('required',false);
+            $("#lent_to_g").hide().prop('required',false);
+            $("#dashboard").hide().prop('required',false);
+            $("#owe_to_f").hide().prop('required',false);
+            $("#lent_to_f").hide().prop('required',false);
+            $("#particular_g").hide().prop('required',false);
+            $("#particular_f").hide().prop('required',false);
+            $("#all_f").show();
+            $.ajax({
+                type: 'POST',
+                url: '/all_f',
+                data: {all:'all'},
+                success: function(data)
+                    {
+                        $("#all_f").html(data);
+                        $(".clickable").click(function(){
+                        var friend_id = $(this).attr('id');
+                        $.ajax({
+                            type: 'POST',
+                            url: '/friend_transactions',
+                            data: {'friend_id':friend_id},
+                            success: function(data)
+                                {
+                                
+                                    $("#particular_f").show();
+                                    $("#particular_f").html(data);  
+                                    $("#particular_g").hide().prop('required',false);
+                                    $("#dashboard").hide().prop('required',false);
+                                    $("#outstanding_g").hide().prop('required',false);
+                                    $("#outstanding_f").hide().prop('required',false);
+                                    $("#owe_to_g").hide().prop('required',false);
+                                    $("#lent_to_g").hide().prop('required',false);
+                                    $("#all_f").hide().prop('required',false);
+                                    $("#owe_to_f").hide().prop('required',false);
+                                    $("#lent_to_f").hide().prop('required',false);
+                                    $("#all_g").hide().prop('required',false);
+                                    $("#settleup_f").click(function(){
+                                        if ($("#settlediv_f").css('display') == "none"){
+                                            var friend_id = $('#pickid_f').val();
+                                            $.ajax({
+                                            type: 'POST',
+                                            url: '/friend_settle_up',
+                                            data: {'friend_id':friend_id},
+                                            success: function(data)
+                                                {
+                                                    $("#settlediv_f").show();
+                                                    $("#settlediv_f").html(data); 
+
+                                                }
+                                            });
+                                        } else {
+                                            $("#settlediv_f").hide();
+                                        }
+                                        
+                                    });
+
+                                }
+                            });
+                        });
+                    }
+                });
+        });
+
+        $("#outstanding_f_link").on('click',function(event){
+            $("#dashboard").hide().prop('required',false);
+            $("#all_g").hide().prop('required',false);
+            $("#outstanding_g").hide().prop('required',false);
+            $("#owe_to_g").hide().prop('required',false);
+            $("#lent_to_g").hide().prop('required',false);
+            $("#all_f").hide().prop('required',false);
+            $("#owe_to_f").hide().prop('required',false);
+            $("#lent_to_f").hide().prop('required',false);
+            $("#particular_g").hide().prop('required',false);
+            $("#particular_f").hide().prop('required',false);
+            $("#outstanding_f").show();
+            $.ajax({
+                type: 'POST',
+                url: '/all_f',
+                data: {outstanding:'outstanding'},
+                success: function(data)
+                    {
+                        $("#outstanding_f").html(data);
+                        $(".clickable").click(function(){
+                        var friend_id = $(this).attr('id');
+                        $.ajax({
+                            type: 'POST',
+                            url: '/friend_transactions',
+                            data: {'friend_id':friend_id},
+                            success: function(data)
+                                {
+                                
+                                    $("#particular_f").show();
+                                    $("#particular_f").html(data);  
+                                    $("#particular_g").hide().prop('required',false);
+                                    $("#dashboard").hide().prop('required',false);
+                                    $("#outstanding_g").hide().prop('required',false);
+                                    $("#outstanding_f").hide().prop('required',false);
+                                    $("#owe_to_g").hide().prop('required',false);
+                                    $("#lent_to_g").hide().prop('required',false);
+                                    $("#all_f").hide().prop('required',false);
+                                    $("#owe_to_f").hide().prop('required',false);
+                                    $("#lent_to_f").hide().prop('required',false);
+                                    $("#all_g").hide().prop('required',false);
+                                    $("#settleup_f").click(function(){
+                                        if ($("#settlediv_f").css('display') == "none"){
+                                            var friend_id = $('#pickid_f').val();
+                                            $.ajax({
+                                            type: 'POST',
+                                            url: '/friend_settle_up',
+                                            data: {'friend_id':friend_id},
+                                            success: function(data)
+                                                {
+                                                    $("#settlediv_f").show();
+                                                    $("#settlediv_f").html(data); 
+
+                                                }
+                                            });
+                                        } else {
+                                            $("#settlediv_f").hide();
+                                        }
+                                        
+                                    });
+
+                                }
+                            });
+                        });
+                    }
+                });
+        });
+
+        $("#owe_to_f_link").on('click',function(event){
+            $("#all_g").hide().prop('required',false);
+            $("#outstanding_g").hide().prop('required',false);
+            $("#outstanding_f").hide().prop('required',false);
+            $("#owe_to_g").hide().prop('required',false);
+            $("#lent_to_g").hide().prop('required',false);
+            $("#all_f").hide().prop('required',false);
+            $("#dashboard").hide().prop('required',false);
+            $("#lent_to_f").hide().prop('required',false);
+            $("#owe_to_f").show();
+            $("#particular_g").hide().prop('required',false);
+            $("#particular_f").hide().prop('required',false);
+            $.ajax({
+                type: 'POST',
+                url: '/all_f',
+                data: {owe_to_f:'owe_to_f'},
+                success: function(data)
+                    {
+                        $("#owe_to_f").html(data);
+                        $(".clickable").click(function(){
+                        var friend_id = $(this).attr('id');
+                        $.ajax({
+                            type: 'POST',
+                            url: '/friend_transactions',
+                            data: {'friend_id':friend_id},
+                            success: function(data)
+                                {
+                                
+                                    $("#particular_f").show();
+                                    $("#particular_f").html(data);  
+                                    $("#particular_g").hide().prop('required',false);
+                                    $("#dashboard").hide().prop('required',false);
+                                    $("#outstanding_g").hide().prop('required',false);
+                                    $("#outstanding_f").hide().prop('required',false);
+                                    $("#owe_to_g").hide().prop('required',false);
+                                    $("#lent_to_g").hide().prop('required',false);
+                                    $("#all_f").hide().prop('required',false);
+                                    $("#owe_to_f").hide().prop('required',false);
+                                    $("#lent_to_f").hide().prop('required',false);
+                                    $("#all_g").hide().prop('required',false);
+                                    $("#settleup_f").click(function(){
+                                        if ($("#settlediv_f").css('display') == "none"){
+                                            var friend_id = $('#pickid_f').val();
+                                            $.ajax({
+                                            type: 'POST',
+                                            url: '/friend_settle_up',
+                                            data: {'friend_id':friend_id},
+                                            success: function(data)
+                                                {
+                                                    $("#settlediv_f").show();
+                                                    $("#settlediv_f").html(data); 
+
+                                                }
+                                            });
+                                        } else {
+                                            $("#settlediv_f").hide();
+                                        }
+                                        
+                                    });
+
+                                }
+                            });
+                        });
+                    }
+                });
+        });
+
+        $("#lent_to_f_link").on('click',function(event){
+            $("#all_g").hide().prop('required',false);
+            $("#outstanding_g").hide().prop('required',false);
+            $("#outstanding_f").hide().prop('required',false);
+            $("#owe_to_g").hide().prop('required',false);
+            $("#lent_to_g").hide().prop('required',false);
+            $("#all_f").hide().prop('required',false);
+            $("#owe_to_f").hide().prop('required',false);
+            $("#dashboard").hide().prop('required',false);
+            $("#lent_to_f").show();
+            $("#particular_g").hide().prop('required',false);
+            $("#particular_f").hide().prop('required',false);
+            $.ajax({
+                type: 'POST',
+                url: '/all_f',
+                data: {lent_to_f:'lent_to_f'},
+                success: function(data)
+                    {
+                        $("#lent_to_f").html(data);
+                        $(".clickable").click(function(){
+                        var friend_id = $(this).attr('id');
+                        $.ajax({
+                            type: 'POST',
+                            url: '/friend_transactions',
+                            data: {'friend_id':friend_id},
+                            success: function(data)
+                                {
+                                
+                                    $("#particular_f").show();
+                                    $("#particular_f").html(data);  
+                                    $("#particular_g").hide().prop('required',false);
+                                    $("#dashboard").hide().prop('required',false);
+                                    $("#outstanding_g").hide().prop('required',false);
+                                    $("#outstanding_f").hide().prop('required',false);
+                                    $("#owe_to_g").hide().prop('required',false);
+                                    $("#lent_to_g").hide().prop('required',false);
+                                    $("#all_f").hide().prop('required',false);
+                                    $("#owe_to_f").hide().prop('required',false);
+                                    $("#lent_to_f").hide().prop('required',false);
+                                    $("#all_g").hide().prop('required',false);
+                                    $("#settleup_f").click(function(){
+                                        if ($("#settlediv_f").css('display') == "none"){
+                                            var friend_id = $('#pickid_f').val();
+                                            $.ajax({
+                                            type: 'POST',
+                                            url: '/friend_settle_up',
+                                            data: {'friend_id':friend_id},
+                                            success: function(data)
+                                                {
+                                                    $("#settlediv_f").show();
+                                                    $("#settlediv_f").html(data); 
+
+                                                }
+                                            });
+                                        } else {
+                                            $("#settlediv_f").hide();
+                                        }
+                                        
+                                    });
+
+                                }
+                            });
+                        });
+                    }
+                });
+        });
+    });
+
+    /* Function for sidebar navigation - source bootstrap */
+    document.addEventListener("DOMContentLoaded", function(){
+    document.querySelectorAll('.sidebar .nav-link').forEach(function(element){
+    
+        element.addEventListener('click', function (e) {
+
+            let nextEl = element.nextElementSibling;
+            let parentEl  = element.parentElement;	
+
+                if(nextEl) {
+                    e.preventDefault();	
+                    let mycollapse = new bootstrap.Collapse(nextEl);
+                    
+                    if(nextEl.classList.contains('show')){
+                    mycollapse.hide();
+                    } else {
+                        mycollapse.show();
+                        // find other submenus with class=show
+                        var opened_submenu = parentEl.parentElement.querySelector('.submenu.show');
+                        // if it exists, then close all of them
+                        if(opened_submenu){
+                        new bootstrap.Collapse(opened_submenu);
+                        }
+                    }
+                }
+            }); // addEventListener
+        }); // forEach
+    }); 
+    // DOMContentLoaded end
+</script>
+    <div id="left-dash" >
+        <nav class="sidebar card py-2 mb-4">
+            <ul class="nav flex-column" id="nav_accordion">
+                <li class="nav-item has-submenu">
+                    <a class="nav-link col-link" href="dashboard" id="dashboard_link"> <strong>Summary</strong></a>
+                </li>
+                <li class="nav-item has-submenu">
+                    <a class="nav-link col-link" href="#"> <strong>Groups </strong> </a>
+                    <ul class="submenu collapse">
+                        <li><a class="nav-link col-link" id="all_g_link">All groups</a></li>
+                        <li><a class="nav-link col-link"  id="outstanding_g_link">Outstanding balances</a></li>
+                        <li><a class="nav-link col-link"  id="owe_to_g_link">Groups you owe</a></li>
+                        <li><a class="nav-link col-link"  id="lent_to_g_link">Groups that owe you</a> </li>
+                    </ul>
+                </li>
+                <li class="nav-item has-submenu">
+                    <a class="nav-link col-link" href="#"> <strong>Friends</strong> </a>
+                    <ul class="submenu collapse">
+                        <li><a class="nav-link col-link" id="all_f_link">All Friends </a></li>
+                        <li><a class="nav-link col-link"  id="outstanding_f_link">Outstanding balances</a> </li>
+                        <li><a class="nav-link col-link"  id="owe_to_f_link">Friends you owe </a></li>
+                        <li><a class="nav-link col-link"  id="lent_to_f_link">Friends who owe you </a></li>
+                    </ul>
+                </li>
+
+            </ul>
+        </nav>
+    </div>
+
+
+    <div id="dashboard" class="main-dash-div my-1 py-1" style="text-align: center;">
+        <div class="mb-3 pb-3 dash_inside" style="font-size: large;text-align: left;" >
+            <h3>Group Expenses</h3>
+
+            {% if group_expense_neg %}
+                {% for currency_sign,expense in group_expense_neg.items() %} 
+                <div>
+                    You owe <span style="color: #ff0000">{{currency_sign}}{{expense}}</span> in all groups.
+                </div>
+                {% endfor %}
+            {% endif %}
+            {% if group_expense_pos %}
+                {% for currency_sign,expense in group_expense_pos.items() %} 
+                <div>
+                    You lent <span style="color: #6cc269">{{currency_sign}}{{expense}}</span> in all groups.
+                </div>
+                {% endfor %}
+            {% endif %}
+            {% if not group_expense_pos and not group_expense_neg  %}
+                {% if not overall_expense_pos and not overall_expense_neg %}
+                    <div>-</div>
+                {% else %}
+                <div>
+                    There are no group expenses yet. 
+                </div>
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="mb-3 pb-3 dash_inside" style="font-size: large;text-align: left;">
+            <h3>Expenses with Friends</h3>
+
+            {% if friend_expense_neg %}
+                {% for currency_sign,expense in friend_expense_neg.items() %} 
+                <div>
+                    You owe <span style="color: #ff0000">{{currency_sign}}{{expense}}</span> to friends outside group.
+                </div>
+                {% endfor %}
+            {% endif %}
+            {% if friend_expense_pos %}
+                {% for currency_sign,expense in friend_expense_pos.items() %} 
+                <div>
+                    Your friends owe you <span style="color: #6cc269">{{currency_sign}}{{expense}}</span> outside group.
+                </div>
+                {% endfor %}
+            {% endif %}
+            {% if not friend_expense_pos and not friend_expense_neg  %}
+                {% if not overall_expense_pos and not overall_expense_neg %}
+                    <div>-</div>
+                {% else %}
+                    <div>
+                        There are no expenses with friends outside group yet. 
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="mb-5 pb-5 dash_inside" style="font-size: large;text-align: left;">
+            <h3>Total Expenses</h3>
+
+            {% if overall_expense_neg %}
+                {% for currency_sign,expense in overall_expense_neg.items() %} 
+                <div>
+                    Overall, You owe <span style="color: #ff0000">{{currency_sign}}{{expense}}</span>
+                </div>
+                {% endfor %}
+            {% endif %}
+            {% if overall_expense_pos %}
+                {% for currency_sign,expense in overall_expense_pos.items() %} 
+                <div>
+                    Overall, You lent <span style="color: #6cc269">{{currency_sign}}{{expense}}</span>
+                </div>
+                {% endfor %}
+            {% endif %}
+            {% if not overall_expense_pos and not overall_expense_neg  %}
+                <div>
+                    There are no expenses yet. 
+                </div>
+            {% endif %}
+            </div>
+    </div>
+    <div class="m-1 p-2"></div>
+
+    <div id="all_g" class="main-dash-div widthdiv" style="display: none;"></div>
+    <div id="outstanding_g" class="main-dash-div widthdiv" style="display: none;"></div>
+    <div id="owe_to_g" class="main-dash-div widthdiv" style="display: none;"></div>
+    <div id="lent_to_g" class="main-dash-div widthdiv" style="display: none;"></div>
+    <div id="particular_g" class="main-dash-div widthdiv" style="display: none;"></div>
+        
+    <div id="all_f" class="main-dash-div widthdiv" style="display: none;"></div>
+    <div id="outstanding_f" class="main-dash-div widthdiv" style="display: none;"></div>
+    <div id="owe_to_f" class="main-dash-div widthdiv" style="display: none;"></div>
+    <div id="lent_to_f" class="main-dash-div widthdiv" style="display: none;"></div>
+    <div id="particular_f" class="main-dash-div widthdiv" style="display: none;"></div>
+{% endblock %}
+
