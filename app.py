@@ -39,8 +39,8 @@ app.config["SESSION_TYPE"] = "filesystem"
 # Configure mail to use send email updates
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'radhikamendiratta1994@gmail.com'
-app.config['MAIL_PASSWORD'] = 'hjsxpxjmfwmtvwbf'
+app.config['MAIL_USERNAME'] = 'dummy_mail'
+app.config['MAIL_PASSWORD'] = 'dummy_password'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 
