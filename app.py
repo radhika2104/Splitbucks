@@ -533,7 +533,7 @@ def signup():
         db.close()
 
         # Send email update for successfull signup
-        msg = Message(subject='Welcome to SplitBucks', sender='radhikamendiratta1994@gmail.com', recipients=[email])
+        msg = Message(subject='Welcome to SplitBucks', sender='dummy_mail', recipients=[email])
         msg.body = ("Nice to meet you %s! You have been successfully registered to Splitbucks.\n\nGet started by adding friends and experience less stress while sharing any kind of expenses.\n\n If you have any questions or feedback, hit reply and let us know – we’d love to hear from you.\n\nHave a great day! \n\n-The SplitBucks team " % username.capitalize())
         mail.send(msg)
         return redirect("/")
